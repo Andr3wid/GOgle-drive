@@ -2,17 +2,24 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/spf13/viper"
 )
 
-func main() {
-	resp, err := http.Get("http://andref.xyz")
+// initialize viper env reader
+func initViper() {
+	viper.AddConfigPath(".")
+	viper.SetConfigName("env")
+	viper.AutomaticEnv()
+	viper.SetConfigType("yaml")
 
-	if err == nil {
-		fmt.Println(resp)
-	} else {
-		fmt.Println("An error occured while trying to obtain resources, the error was: ")
-		fmt.Println(err)
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println("Error while trying to read env config")
 	}
+}
 
+func main() {
+	initViper()
+
+	fmt.Println()
 }
